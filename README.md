@@ -4,3 +4,4 @@ An implementation of the Random Forest machine learning algorithm. This algorith
 
 ## Sources
 - [Python Implementation](https://github.com/Suji04/ML_from_Scratch/blob/master/decision%20tree%20classification.ipynb)
+- [Article](https://towardsdatascience.com/decision-tree-and-random-forest-explained-8d20ddabc9dd)
