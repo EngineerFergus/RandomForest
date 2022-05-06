@@ -101,7 +101,7 @@ namespace RandomForest
             return (bestNode, bestLeft, bestRight);
         }
 
-        private (LabeledData[] left, LabeledData[] right) Split(LabeledData[] data, int featureIdx, double threshold)
+        private static (LabeledData[] left, LabeledData[] right) Split(LabeledData[] data, int featureIdx, double threshold)
         {
             LabeledData[] leftData = data.Where(x => x[featureIdx] <= threshold).ToArray();
             LabeledData[] rightData = data.Where(x => x[featureIdx] > threshold).ToArray();
@@ -109,7 +109,7 @@ namespace RandomForest
             return (leftData, rightData);
         }
 
-        private double CalcInformationGain(LabeledData[] parentData, LabeledData[] leftChildData, LabeledData[] rightChildData)
+        private static double CalcInformationGain(LabeledData[] parentData, LabeledData[] leftChildData, LabeledData[] rightChildData)
         {
             double leftWeight = (double)leftChildData.Length / parentData.Length;
             double rightWeight = (double)rightChildData.Length / parentData.Length;
@@ -154,7 +154,7 @@ namespace RandomForest
             return classes[bestIndex];
         }
 
-        private double CalcGiniIndex(LabeledData[] data)
+        private static double CalcGiniIndex(LabeledData[] data)
         {
             List<int> classes = data.Select(x => x.Label).Distinct().ToList();
 

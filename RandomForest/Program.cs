@@ -37,7 +37,7 @@ foreach(LabeledData d in test)
 
 Console.WriteLine($"Decision tree test accuracy: {((double)numCorrect / test.Length):F3}, ({numCorrect}/{test.Length})");
 
-Forest forest = new Forest(300, train.Length, 2);
+Forest forest = new Forest(300, train.Length, 10, 4, 12);
 
 forest.Train(train);
 
