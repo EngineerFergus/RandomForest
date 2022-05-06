@@ -8,7 +8,7 @@ data = Util.BalanceClasses(data);
 (var train, var test) = Util.Split(data);
 
 
-DecisionTree tree = new DecisionTree(2, 6);
+DecisionTree tree = new DecisionTree(2, 6, data[0].Length);
 tree.Train(train);
 
 int numCorrect = 0;
@@ -37,7 +37,7 @@ foreach(LabeledData d in test)
 
 Console.WriteLine($"Decision tree test accuracy: {((double)numCorrect / test.Length):F3}, ({numCorrect}/{test.Length})");
 
-Forest forest = new Forest(100, train.Length, 2);
+Forest forest = new Forest(300, train.Length, 2);
 
 forest.Train(train);
 

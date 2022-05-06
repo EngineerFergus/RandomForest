@@ -11,15 +11,30 @@ namespace RandomForest
         public DecisionNode? Root { get; private set; }
         public int MinSamplesSplit { get; private set; }
         public int MaxDepth { get; private set; }
+        public int MaxFeatures { get; private set; }
 
-        public DecisionTree(int minSamplesSplit, int maxDepth)
+        private List<int> shuffledFeatureIndices;
+
+        public DecisionTree(int minSamplesSplit, int maxDepth, int maxFeatures)
         {
             MinSamplesSplit = minSamplesSplit;
             MaxDepth = maxDepth;
+            MaxFeatures = maxFeatures;
+            shuffledFeatureIndices = new List<int>();
         }
 
         public void Train(LabeledData[] data)
         {
+            for(int i = 0 ;i < data[0].Length; i++)
+            {
+                shuffledFeatureIndices.Add(i);
+            }
+
+            Random rng = new Random();
+            shuffledFeatureIndices = shuffledFeatureIndices.OrderBy(x => rng.Next()).ToList();
+
+            MaxFeatures = Math.Min(MaxFeatures, data[0].Length - 1);
+
             Root = BuildTree(data);
         }
 
@@ -57,13 +72,14 @@ namespace RandomForest
             LabeledData[] bestLeft = new LabeledData[0];
             LabeledData[] bestRight = new LabeledData[0];
 
-            for(int i = 0; i < data[0].Length; i++)
+            for(int i = 0; i < MaxFeatures; i++)
             {
-                var thresholds = data.Select(x => x[i]).Distinct();
+                int index = shuffledFeatureIndices[i];
+                var thresholds = data.Select(x => x[index]).Distinct();
 
                 foreach(double threshold in thresholds)
                 {
-                    (LabeledData[] left, LabeledData[] right) = Split(data, i, threshold);
+                    (LabeledData[] left, LabeledData[] right) = Split(data, index, threshold);
                     double currentGain = CalcInformationGain(data, left, right);
 
                     if(currentGain > maxInfoGain)
@@ -71,7 +87,7 @@ namespace RandomForest
                         maxInfoGain = currentGain;
                         bestNode = new DecisionNode()
                         {
-                            Index = i,
+                            Index = index,
                             Threshold = threshold,
                             InfoGain = currentGain
                         };

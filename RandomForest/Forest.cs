@@ -24,7 +24,7 @@ namespace RandomForest
             for(int i = 0; i < numTrees; i++)
             {
                 LabeledData[] bootStrapped = Bootstrap(data, bootStrapSize);
-                DecisionTree tree = new DecisionTree(2, 6);
+                DecisionTree tree = new DecisionTree(2, 6, 16);
                 tree.Train(bootStrapped);
                 trees.Add(tree);
             }
